@@ -1,0 +1,1 @@
+ALTER TABLE "profile" RENAME COLUMN "image" TO "image_url";
