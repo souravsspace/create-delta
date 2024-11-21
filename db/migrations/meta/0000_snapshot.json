@@ -1,29 +1,29 @@
 {
-  "id": "3d09bfed-a430-4471-975c-734850aa43e2",
+  "id": "f8aa4726-2db8-4ae7-b6bd-aec93cb9d599",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.account": {
-      "name": "account",
+    "public.su_accounts": {
+      "name": "su_accounts",
       "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "serial",
           "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
+          "notNull": true
         },
         "user_id": {
           "name": "user_id",
-          "type": "uuid",
+          "type": "serial",
           "primaryKey": false,
           "notNull": true
         },
-        "account_type": {
-          "name": "account_type",
-          "type": "text",
+        "accountType": {
+          "name": "accountType",
+          "type": "type",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
@@ -39,12 +39,6 @@
           "primaryKey": false,
           "notNull": false
         },
-        "password": {
-          "name": "password",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
         "salt": {
           "name": "salt",
           "type": "text",
@@ -52,12 +46,34 @@
           "notNull": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "user_id_account_type_idx": {
+          "name": "user_id_account_type_idx",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "accountType",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {
-        "account_user_id_user_id_fk": {
-          "name": "account_user_id_user_id_fk",
-          "tableFrom": "account",
-          "tableTo": "user",
+        "su_accounts_user_id_su_users_id_fk": {
+          "name": "su_accounts_user_id_su_users_id_fk",
+          "tableFrom": "su_accounts",
+          "tableTo": "su_users",
           "columnsFrom": [
             "user_id"
           ],
@@ -70,15 +86,15 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "account_github_id_unique": {
-          "name": "account_github_id_unique",
+        "su_accounts_github_id_unique": {
+          "name": "su_accounts_github_id_unique",
           "nullsNotDistinct": false,
           "columns": [
             "github_id"
           ]
         },
-        "account_google_id_unique": {
-          "name": "account_google_id_unique",
+        "su_accounts_google_id_unique": {
+          "name": "su_accounts_google_id_unique",
           "nullsNotDistinct": false,
           "columns": [
             "google_id"
@@ -89,20 +105,80 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.profile": {
-      "name": "profile",
+    "public.su_magic_links": {
+      "name": "su_magic_links",
       "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "serial",
           "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "token": {
+          "name": "token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "tokenExpiresAt": {
+          "name": "tokenExpiresAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "token_idx": {
+          "name": "token_idx",
+          "columns": [
+            {
+              "expression": "token",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "su_magic_links_email_unique": {
+          "name": "su_magic_links_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "email"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.su_profiles": {
+      "name": "su_profiles",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
         },
         "user_id": {
           "name": "user_id",
-          "type": "uuid",
+          "type": "serial",
           "primaryKey": false,
           "notNull": true
         },
@@ -118,8 +194,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "image": {
-          "name": "image",
+        "image_url": {
+          "name": "image_url",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -133,10 +209,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "profile_user_id_user_id_fk": {
-          "name": "profile_user_id_user_id_fk",
-          "tableFrom": "profile",
-          "tableTo": "user",
+        "su_profiles_user_id_su_users_id_fk": {
+          "name": "su_profiles_user_id_su_users_id_fk",
+          "tableFrom": "su_profiles",
+          "tableTo": "su_users",
           "columnsFrom": [
             "user_id"
           ],
@@ -149,15 +225,8 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "profile_id_unique": {
-          "name": "profile_id_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "id"
-          ]
-        },
-        "profile_user_id_unique": {
-          "name": "profile_user_id_unique",
+        "su_profiles_user_id_unique": {
+          "name": "su_profiles_user_id_unique",
           "nullsNotDistinct": false,
           "columns": [
             "user_id"
@@ -168,20 +237,19 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.session": {
-      "name": "session",
+    "public.su_sessions": {
+      "name": "su_sessions",
       "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "serial",
           "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
+          "notNull": true
         },
         "user_id": {
           "name": "user_id",
-          "type": "uuid",
+          "type": "serial",
           "primaryKey": false,
           "notNull": true
         },
@@ -194,10 +262,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "session_user_id_user_id_fk": {
-          "name": "session_user_id_user_id_fk",
-          "tableFrom": "session",
-          "tableTo": "user",
+        "su_sessions_user_id_su_users_id_fk": {
+          "name": "su_sessions_user_id_su_users_id_fk",
+          "tableFrom": "su_sessions",
+          "tableTo": "su_users",
           "columnsFrom": [
             "user_id"
           ],
@@ -214,80 +282,15 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.tokens": {
-      "name": "tokens",
+    "public.su_users": {
+      "name": "su_users",
       "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "serial",
           "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "uuid",
-          "primaryKey": false,
           "notNull": true
-        },
-        "token": {
-          "name": "token",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "hashed_token": {
-          "name": "hashed_token",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "token_expires_at": {
-          "name": "token_expires_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "tokens_user_id_user_id_fk": {
-          "name": "tokens_user_id_user_id_fk",
-          "tableFrom": "tokens",
-          "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.user": {
-      "name": "user",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "name": {
-          "name": "name",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
         },
         "email": {
           "name": "email",
@@ -300,28 +303,14 @@
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
         }
       },
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "user_email_unique": {
-          "name": "user_email_unique",
+        "su_users_email_unique": {
+          "name": "su_users_email_unique",
           "nullsNotDistinct": false,
           "columns": [
             "email"
@@ -333,7 +322,17 @@
       "isRLSEnabled": false
     }
   },
-  "enums": {},
+  "enums": {
+    "public.type": {
+      "name": "type",
+      "schema": "public",
+      "values": [
+        "email",
+        "google",
+        "github"
+      ]
+    }
+  },
   "schemas": {},
   "sequences": {},
   "roles": {},

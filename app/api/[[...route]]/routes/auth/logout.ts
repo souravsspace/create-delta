@@ -1,8 +1,5 @@
 import { Hono } from "hono";
-import { cookies } from "next/headers";
-import { lucia, validateRequest } from "@/lib/auth";
-
-type ResponseType = { success: string } | { error: string };
+import { invalidateSession, validateRequest } from "@/lib/auth";
 
 const app = new Hono().get("/", async (c) => {
   const { session } = await validateRequest();
@@ -10,15 +7,9 @@ const app = new Hono().get("/", async (c) => {
     return c.json({ error: "Session not found or expired" }, 401);
   }
 
-  await lucia.invalidateSession(session.id);
-  const sessionCookie = lucia.createBlankSessionCookie();
-  (await cookies()).set(
-    sessionCookie.name,
-    sessionCookie.value,
-    sessionCookie.attributes,
-  );
+  await invalidateSession(session.id);
 
-  return c.json<ResponseType>({ success: "Logged out successfully" }, 200);
+  return c.redirect("/signed-out", 302);
 });
 
 export default app;

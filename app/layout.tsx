@@ -2,10 +2,8 @@ import "@/styles/globals.css";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { validateRequest } from "@/lib/auth";
 import { Toaster } from "@/components/ui/sonner";
 import { Providers } from "@/components/providers";
-import { SessionProvider } from "@/components/providers/session-provider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,8 +26,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await validateRequest();
-
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -40,10 +36,8 @@ export default async function RootLayout({
         )}
       >
         <Providers>
-          <SessionProvider value={session}>
-            <Toaster />
-            {children}
-          </SessionProvider>
+          <Toaster />
+          {children}
         </Providers>
       </body>
     </html>

@@ -1,23 +1,22 @@
-"use client";
-
 import Link from "next/link";
 
-import { useLogout } from "@/hooks/use-logout";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { useSession } from "@/components/providers/session-provider";
+import { getCurrentUser } from "@/lib/session";
+import { buttonVariants } from "@/components/ui/button";
 
-const HomePage = () => {
-  const { user } = useSession();
-  const { mutateAsync: logOut } = useLogout();
+const HomePage = async () => {
+  const user = await getCurrentUser();
 
   return (
     <main className="flex h-screen w-full flex-col items-center justify-center gap-4">
       {user ? (
         <div className="flex flex-col items-center gap-4">
           <h2 className="text-2xl font-bold">Welcome, {user.email}!</h2>
-          <Button variant="destructive" onClick={() => logOut()}>
-            Logout
-          </Button>
+          <Link
+            href="/api/auth/logout"
+            className={buttonVariants({ variant: "default" })}
+          >
+            LogOut
+          </Link>
         </div>
       ) : (
         <div className="flex items-center gap-2">

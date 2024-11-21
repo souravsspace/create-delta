@@ -6,16 +6,33 @@ import {
   createGithubUserUseCase,
   getAccountByGithubIdUseCase,
 } from "@/others/use-case/auth";
+import { env } from "@/lib/env";
+import { github } from "@/lib/auth";
 import { setSession } from "@/lib/session";
-import { validateRequest, github } from "@/lib/auth";
-import { afterLoginUrl } from "@/constant/config";
-import { env } from "@/env/server";
+import { afterLoginUrl } from "@/constant/app-config";
+
+export interface GitHubUser {
+  id: string;
+  login: string;
+  avatar_url: string;
+  email: string;
+  name: string;
+  bio: string;
+}
+interface Email {
+  email: string;
+  primary: boolean;
+  verified: boolean;
+  visibility: string | null;
+}
+
+const getPrimaryEmail = (emails: Email[]): string => {
+  const primaryEmail = emails.find((email) => email.primary);
+  return primaryEmail!.email;
+};
 
 const app = new Hono()
   .get("/", async (c) => {
-    const { session } = await validateRequest();
-    if (session) return c.redirect("/");
-
     const state = generateState();
     const scopes = ["user:email"];
     const url = github.createAuthorizationURL(state, scopes);
@@ -87,24 +104,3 @@ const app = new Hono()
   });
 
 export default app;
-
-export interface GitHubUser {
-  id: string;
-  login: string;
-  avatar_url: string;
-  email: string;
-  name: string;
-  bio: string;
-}
-
-function getPrimaryEmail(emails: Email[]): string {
-  const primaryEmail = emails.find((email) => email.primary);
-  return primaryEmail!.email;
-}
-
-interface Email {
-  email: string;
-  primary: boolean;
-  verified: boolean;
-  visibility: string | null;
-}

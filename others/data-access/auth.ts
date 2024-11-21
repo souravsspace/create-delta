@@ -1,13 +1,14 @@
 import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
-import { UserTable, AccountTable, ProfilesTable } from "@/db/schema";
+import { UserId } from "@/others/data-access/types";
+import { UsersTable, AccountsTable, ProfilesTable, USER } from "@/db/schema";
 import { GitHubUser } from "@/app/api/[[...route]]/routes/auth/github";
 import { GoogleUser } from "@/app/api/[[...route]]/routes/auth/google";
 
 export async function createUserFromDatabase(email: string) {
   const [user] = await db
-    .insert(UserTable)
+    .insert(UsersTable)
     .values({
       email,
       emailVerified: new Date(),
@@ -16,41 +17,61 @@ export async function createUserFromDatabase(email: string) {
   return user;
 }
 
+export async function deleteUserFromDatabase(userId: UserId) {
+  await db.delete(UsersTable).where(eq(UsersTable.id, userId));
+}
+
+export async function setEmailVerifiedFromDatabase(userId: UserId) {
+  await db
+    .update(UsersTable)
+    .set({
+      emailVerified: new Date(),
+    })
+    .where(eq(UsersTable.id, userId));
+}
+
+export async function updateUserFromDatabase(
+  userId: UserId,
+  updatedUser: Partial<USER>,
+) {
+  await db.update(UsersTable).set(updatedUser).where(eq(UsersTable.id, userId));
+}
+
 export async function getUserByEmailFromDatabase(email: string) {
-  const user = await db.query.UserTable.findFirst({
-    where: eq(UserTable.email, email),
+  const user = await db.query.UsersTable.findFirst({
+    where: eq(UsersTable.email, email),
   });
 
   return user;
 }
 
-export async function getUserByIdFromDatabase(id: string) {
-  const user = await db.query.UserTable.findFirst({
-    where: eq(UserTable.id, id),
+export async function getUserByIdFromDatabase(userId: UserId) {
+  const user = await db.query.UsersTable.findFirst({
+    where: eq(UsersTable.id, userId),
   });
 
   return user;
 }
 
 export async function getAccountByGoogleIdFromDatabase(googleId: string) {
-  return await db.query.AccountTable.findFirst({
-    where: eq(AccountTable.googleId, googleId),
+  return await db.query.AccountsTable.findFirst({
+    where: eq(AccountsTable.googleId, googleId),
   });
 }
 
 export async function getAccountByGithubIdFromDatabase(githubId: string) {
-  return await db.query.AccountTable.findFirst({
-    where: eq(AccountTable.githubId, githubId),
+  return await db.query.AccountsTable.findFirst({
+    where: eq(AccountsTable.githubId, githubId),
   });
 }
 
 export async function createAccountViaGoogleFromDatabase(
-  userId: string,
+  userId: UserId,
   googleUser: GoogleUser,
 ) {
   const [account, profile] = await db.batch([
     db
-      .insert(AccountTable)
+      .insert(AccountsTable)
       .values({
         userId,
         googleId: googleUser.sub,
@@ -75,12 +96,12 @@ export async function createAccountViaGoogleFromDatabase(
 }
 
 export async function createAccountViaGithubFromDatabase(
-  userId: string,
+  userId: UserId,
   gitHubUser: GitHubUser,
 ) {
   const [account, profile] = await db.batch([
     db
-      .insert(AccountTable)
+      .insert(AccountsTable)
       .values({
         userId,
         accountType: "github",

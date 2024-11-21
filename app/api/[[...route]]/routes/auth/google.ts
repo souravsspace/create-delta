@@ -1,6 +1,6 @@
 import {
-  generateCodeVerifier,
   generateState,
+  generateCodeVerifier,
   OAuth2RequestError,
 } from "arctic";
 import { Hono } from "hono";
@@ -12,6 +12,17 @@ import {
 } from "@/others/use-case/auth";
 import { google } from "@/lib/auth";
 import { setSession } from "@/lib/session";
+
+export interface GoogleUser {
+  sub: string;
+  name: string;
+  given_name: string;
+  family_name: string;
+  picture: string;
+  email: string;
+  email_verified: boolean;
+  locale: string;
+}
 
 const app = new Hono()
   .get("/", async (c) => {
@@ -87,14 +98,3 @@ const app = new Hono()
   });
 
 export default app;
-
-export interface GoogleUser {
-  sub: string;
-  name: string;
-  given_name: string;
-  family_name: string;
-  picture: string;
-  email: string;
-  email_verified: boolean;
-  locale: string;
-}

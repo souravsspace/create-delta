@@ -1,6 +1,6 @@
 import { createServerActionProcedure } from "zsa";
 
-import { env } from "@/env/server";
+import { env } from "@/lib/env";
 import { assertAuthenticated } from "@/lib/session";
 import { PublicError } from "@/others/use-case/errors";
 

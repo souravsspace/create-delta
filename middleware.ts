@@ -1,8 +1,5 @@
 import type { NextRequest } from "next/server";
-
-const apiRoute = "/api";
-const authRoutes = ["/login", "/signup", "/verify-email"];
-const privateRoutes = ["/profile"];
+import { apiRoute, authRoutes, privateRoutes } from "@/constant/app-config";
 
 export function middleware(request: NextRequest) {
   const { nextUrl } = request;
