@@ -14,15 +14,12 @@ import {
   Text,
 } from "@react-email/components";
 
-// import { env } from "@/lib/env";
+import { env } from "@/lib/env";
 import { applicationName, LOGO_URL } from "@/constant/app-config";
 
-const BASE_URL = "LOacl";
+const BASE_URL = env.APP_URL;
 
-// const BASE_URL = env.APP_URL;
-// export default function MagicLinkEmail({ token }: { token: string }) {
-export default function MagicLinkEmail() {
-  const token = "ulalalaaa";
+export default function MagicLinkEmail({ token }: { token: string }) {
   const previewText = `Login using magic link`;
   return (
     <Html>
@@ -31,7 +28,7 @@ export default function MagicLinkEmail() {
       <Tailwind>
         <React.Fragment>
           <Body className="mx-auto my-auto bg-white font-sans">
-            <Container className="mx-auto my-[40px] w-[465px] rounded rounded-md border border-solid border-[#eaeaea] p-[20px]">
+            <Container className="mx-auto my-[40px] w-[465px] rounded-md border border-solid border-[#eaeaea] p-[20px]">
               <Section className="mt-[32px]">
                 <Img
                   src={LOGO_URL}
