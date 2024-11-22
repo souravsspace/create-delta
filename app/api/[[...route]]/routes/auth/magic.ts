@@ -1,33 +1,60 @@
+import { z } from "zod";
 import { Hono } from "hono";
-import { rateLimitByIp } from "@/lib/limiter";
+
 import { setSession } from "@/lib/session";
+import { rateLimitByIp, rateLimitByKey } from "@/lib/limiter";
+import { zValidator } from "@hono/zod-validator";
+import {
+  loginWithMagicLinkUseCase,
+  sendMagicLinkUseCase,
+} from "@/others/use-case/magic-links";
 import { afterLoginUrl } from "@/constant/app-config";
-import { loginWithMagicLinkUseCase } from "@/others/use-case/magic-links";
 
-const app = new Hono().get("/", async (c) => {
-  try {
-    await rateLimitByIp({ key: "magic-token", limit: 5, window: 60000 });
-    const url = new URL(c.res.url);
-    const token = url.searchParams.get("token");
+const app = new Hono()
+  .post(
+    "/",
+    zValidator(
+      "json",
+      z.object({
+        email: z.string().email(),
+      }),
+    ),
+    async (c) => {
+      const { email } = c.req.valid("json");
+      await rateLimitByKey({ key: "magic-token", limit: 3, window: 30000 });
 
-    if (!token) {
-      return new Response(null, {
-        status: 302,
-        headers: {
-          Location: "/sign-in",
-        },
-      });
-    }
+      await sendMagicLinkUseCase(email);
 
-    const user = await loginWithMagicLinkUseCase(token);
+      return c.json({ email: email }, 200);
+    },
+  )
+  .get(
+    "/",
+    zValidator(
+      "query",
+      z.object({
+        token: z.string().optional(),
+      }),
+    ),
+    async (c) => {
+      try {
+        await rateLimitByIp({ key: "magic-token", limit: 3, window: 60000 });
+        const { token } = c.req.valid("query");
 
-    await setSession(user.id);
+        if (!token) {
+          return c.redirect("/login/magic-error", 302);
+        }
 
-    return c.redirect(afterLoginUrl, 302);
-  } catch (err) {
-    console.error(err);
-    return c.redirect("/sign-in/magic/error", 302);
-  }
-});
+        const user = await loginWithMagicLinkUseCase(token);
+
+        await setSession(user.id);
+
+        return c.redirect(afterLoginUrl, 302);
+      } catch (err) {
+        console.error(err);
+        return c.redirect("/login/magic-error", 302);
+      }
+    },
+  );
 
 export default app;

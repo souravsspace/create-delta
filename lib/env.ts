@@ -15,9 +15,11 @@ export const env = createEnv({
     EMAIL_SERVER_PORT: z.string().min(1),
     EMAIL_FROM: z.string().min(1),
     RESEND_AUDIENCE_ID: z.string().min(1),
-    HOST_NAME: z.string().min(1),
+    APP_URL: z.string().min(1),
   },
-  client: {},
+  client: {
+    NEXT_PUBLIC_APP_URL: z.string().min(1),
+  },
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
@@ -31,6 +33,7 @@ export const env = createEnv({
     EMAIL_SERVER_PORT: process.env.EMAIL_SERVER_PORT,
     EMAIL_FROM: process.env.EMAIL_FROM,
     RESEND_AUDIENCE_ID: process.env.RESEND_AUDIENCE_ID,
-    HOST_NAME: process.env.HOST_NAME,
+    APP_URL: process.env.APP_URL,
+    NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
   },
 });

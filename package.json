@@ -10,9 +10,11 @@
     "db:generate": "drizzle-kit generate --dialect=postgresql --schema=./db/schema.ts --out=./db/migrations",
     "db:migrate": "bun ./db/migrate.ts",
     "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "email:dev": "email dev"
   },
   "dependencies": {
+    "@hono/zod-validator": "^0.4.1",
     "@hookform/resolvers": "^3.9.1",
     "@neondatabase/serverless": "^0.10.3",
     "@oslojs/crypto": "^1.0.1",
@@ -54,6 +56,7 @@
     "postcss": "^8",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.9",
+    "react-email": "3.0.2",
     "tailwindcss": "^3.4.1",
     "tsx": "^4.19.2",
     "typescript": "^5"

@@ -14,12 +14,15 @@ import {
   Text,
 } from "@react-email/components";
 
-import { env } from "@/lib/env";
-import { applicationName } from "@/constant/app-config";
+// import { env } from "@/lib/env";
+import { applicationName, LOGO_URL } from "@/constant/app-config";
 
-export const BASE_URL = env.HOST_NAME;
+const BASE_URL = "LOacl";
 
-export function MagicLinkEmail({ token }: { token: string }) {
+// const BASE_URL = env.APP_URL;
+// export default function MagicLinkEmail({ token }: { token: string }) {
+export default function MagicLinkEmail() {
+  const token = "ulalalaaa";
   const previewText = `Login using magic link`;
   return (
     <Html>
@@ -28,12 +31,12 @@ export function MagicLinkEmail({ token }: { token: string }) {
       <Tailwind>
         <React.Fragment>
           <Body className="mx-auto my-auto bg-white font-sans">
-            <Container className="mx-auto my-[40px] w-[465px] rounded border border-solid border-[#eaeaea] p-[20px]">
+            <Container className="mx-auto my-[40px] w-[465px] rounded rounded-md border border-solid border-[#eaeaea] p-[20px]">
               <Section className="mt-[32px]">
                 <Img
-                  src={`${BASE_URL}/group.jpeg`}
+                  src={LOGO_URL}
                   width="160"
-                  height="48"
+                  height="160"
                   alt={applicationName}
                   className="mx-auto my-0"
                 />
@@ -46,9 +49,9 @@ export function MagicLinkEmail({ token }: { token: string }) {
 
                 <Text className="text-[14px] font-medium leading-[24px] text-black">
                   <Link
-                    href={`${BASE_URL}/api/login/magic?token=${token}`}
+                    href={`${BASE_URL}/api/auth/login/magic?token=${token}`}
                     target="_blank"
-                    className="text-[#2754C5] underline"
+                    className="rounded-md bg-blue-500 px-4 py-2 text-white"
                   >
                     Login using Magic Link
                   </Link>

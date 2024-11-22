@@ -23,13 +23,13 @@ const SESSION_MAX_DURATION_MS = SESSION_REFRESH_INTERVAL_MS * 2;
 export const github = new GitHub(
   env.GITHUB_CLIENT_ID,
   env.GITHUB_CLIENT_SECRET,
-  `${env.HOST_NAME}/api/auth/login/github/callback`,
+  `${env.APP_URL}/api/auth/login/github/callback`,
 );
 
 export const google = new Google(
   env.GOOGLE_CLIENT_ID,
   env.GOOGLE_CLIENT_SECRET,
-  `${env.HOST_NAME}/api/auth/login/google/callback`,
+  `${env.APP_URL}/api/auth/login/google/callback`,
 );
 
 export const generateSessionToken = (): string => {

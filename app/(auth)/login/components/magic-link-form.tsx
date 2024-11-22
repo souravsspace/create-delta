@@ -1,9 +1,8 @@
 "use client";
 
 import { z } from "zod";
-
-import { toast } from "sonner";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
   Form,
@@ -13,8 +12,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
 import LoaderButton from "@/components/shared/loader-button";
+import useSendMagicLink from "@/hooks/magic/use-send-magic-link";
 
 const FormSchema = z.object({
   email: z.string().email(),
@@ -22,6 +21,8 @@ const FormSchema = z.object({
 type FormSchemaType = z.infer<typeof FormSchema>;
 
 export function MagicLinkForm() {
+  const { mutate, isPending } = useSendMagicLink();
+
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -29,12 +30,9 @@ export function MagicLinkForm() {
     },
   });
 
-  function onSubmit(values: FormSchemaType) {
-    console.log(values);
-    toast.success("Magic link sent to your email");
-  }
-
-  const isPending = false;
+  const onSubmit = ({ email }: FormSchemaType) => {
+    mutate({ json: { email } });
+  };
 
   return (
     <Form {...form}>
