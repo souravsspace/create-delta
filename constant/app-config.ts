@@ -5,12 +5,14 @@ export const appConfig: {
 };
 
 export const apiRoute = "/api";
-export const authRoutes = ["/login", "/signup", "/verify-email"];
-export const privateRoutes = ["/dashboard"];
+export const privateRoutes = ["/"];
+export const authRoutes = ["/login", "/verify-email", "/signed-out"];
 
 export const applicationName = "Create Delta";
 
-export const afterLoginUrl = "/dashboard";
+export const afterLoginUrl = "/";
+export const afterLogoutUrl = "/signed-out";
+export const loginUrl = "/login";
 
 export const TOKEN_LENGTH = 32;
 export const TOKEN_TTL = 1000 * 60 * 5; // 5 min

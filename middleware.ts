@@ -1,9 +1,17 @@
 import type { NextRequest } from "next/server";
-import { apiRoute, authRoutes, privateRoutes } from "@/constant/app-config";
+
+import {
+  apiRoute,
+  loginUrl,
+  authRoutes,
+  afterLoginUrl,
+  privateRoutes,
+  SESSION_COOKIE_NAME,
+} from "@/constant/app-config";
 
 export function middleware(request: NextRequest) {
   const { nextUrl } = request;
-  const authCookie = request.cookies.get("auth_session");
+  const authCookie = request.cookies.get(SESSION_COOKIE_NAME);
 
   const isLoggedIn = !!authCookie?.value;
 
@@ -17,14 +25,14 @@ export function middleware(request: NextRequest) {
 
   if (isAuthRoute) {
     if (isLoggedIn) {
-      return Response.redirect(new URL("/", nextUrl));
+      return Response.redirect(new URL(afterLoginUrl, nextUrl));
     }
     return null;
   }
 
   if (isPrivateRoute) {
     if (!isLoggedIn) {
-      return Response.redirect(new URL("/", nextUrl));
+      return Response.redirect(new URL(loginUrl, nextUrl));
     }
     return null;
   }

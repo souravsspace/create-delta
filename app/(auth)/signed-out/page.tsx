@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { buttonVariants } from "@/components/ui/button";
 
-export default function SignedOutPage() {
+const SignedOutPage = () => {
   const router = useRouter();
   useEffect(() => {
     router.refresh();
@@ -27,4 +27,6 @@ export default function SignedOutPage() {
       </Link>
     </div>
   );
-}
+};
+
+export default SignedOutPage;

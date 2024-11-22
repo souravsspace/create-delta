@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import { invalidateSession, validateRequest } from "@/lib/auth";
+import { deleteSessionTokenCookie } from "@/lib/session";
 
 const app = new Hono().get("/", async (c) => {
   const { session } = await validateRequest();
@@ -8,6 +9,8 @@ const app = new Hono().get("/", async (c) => {
   }
 
   await invalidateSession(session.id);
+
+  deleteSessionTokenCookie();
 
   return c.redirect("/signed-out", 302);
 });
