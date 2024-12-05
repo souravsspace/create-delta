@@ -37,7 +37,7 @@ const app = new Hono()
     const scopes = ["user:email"];
     const url = github.createAuthorizationURL(state, scopes);
 
-    cookies().set("github_oauth_state", state, {
+    (await cookies()).set("github_oauth_state", state, {
       path: "/",
       secure: env.NODE_ENV === "production",
       httpOnly: true,
@@ -51,7 +51,7 @@ const app = new Hono()
     const url = new URL(c.req.url);
     const code = url.searchParams.get("code");
     const state = url.searchParams.get("state");
-    const storedState = cookies().get("github_oauth_state")?.value ?? null;
+    const storedState = (await cookies()).get("github_oauth_state")?.value ?? null;
 
     if (!code || !state || !storedState || state !== storedState) {
       return c.json(null, 400);

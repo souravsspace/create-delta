@@ -54,11 +54,11 @@ export const createSession = async (
 };
 
 export const validateRequest = async (): Promise<SESSION_VALIDATION_RESULT> => {
-  const sessionToken = getSessionToken();
+  const sessionToken = await getSessionToken();
   if (!sessionToken) {
     return { session: null, user: null };
   }
-  return validateSessionToken(sessionToken);
+  return await validateSessionToken(sessionToken);
 };
 
 export const validateSessionToken = async (

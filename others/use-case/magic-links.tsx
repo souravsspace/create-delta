@@ -7,7 +7,6 @@ import {
   upsertMagicLink,
 } from "@/others/data-access/magic-links";
 import { sendEmail } from "@/lib/send-email";
-import { MagicLinkEmail } from "@/emails/magic-link";
 import { PublicError } from "@/others/use-case/errors";
 import { applicationName } from "@/constant/app-config";
 import { createProfile } from "@/others/data-access/profiles";
@@ -15,6 +14,7 @@ import {
   getUserByEmailFromDatabase,
   setEmailVerifiedFromDatabase,
 } from "@/others/data-access/auth";
+import MagicLinkEmail from "@/emails/magic-link";
 
 export async function sendMagicLinkUseCase(email: string) {
   const token = await upsertMagicLink(email);

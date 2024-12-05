@@ -9,8 +9,7 @@ const app = new Hono().get("/", async (c) => {
   }
 
   await invalidateSession(session.id);
-
-  deleteSessionTokenCookie();
+  await deleteSessionTokenCookie();
 
   return c.redirect("/signed-out", 302);
 });

@@ -12,8 +12,13 @@ import { UserId } from "@/others/data-access/types";
 import { SESSION_COOKIE_NAME } from "@/constant/app-config";
 import { AuthenticationError } from "@/others/use-case/errors";
 
-export const setSessionTokenCookie = (token: string, expiresAt: Date): void => {
-  cookies().set(SESSION_COOKIE_NAME, token, {
+export const setSessionTokenCookie = async (
+  token: string,
+  expiresAt: Date,
+): Promise<void> => {
+  const awaitedCookies = await cookies();
+
+  awaitedCookies.set(SESSION_COOKIE_NAME, token, {
     httpOnly: true,
     sameSite: "lax",
     secure: env.NODE_ENV === "production",
@@ -22,8 +27,10 @@ export const setSessionTokenCookie = (token: string, expiresAt: Date): void => {
   });
 };
 
-export const deleteSessionTokenCookie = (): void => {
-  cookies().set(SESSION_COOKIE_NAME, "", {
+export const deleteSessionTokenCookie = async (): Promise<void> => {
+  const awaitedCookies = await cookies();
+
+  awaitedCookies.set(SESSION_COOKIE_NAME, "", {
     httpOnly: true,
     sameSite: "lax",
     secure: env.NODE_ENV === "production",
@@ -32,9 +39,10 @@ export const deleteSessionTokenCookie = (): void => {
   });
 };
 
-export const getSessionToken = (): string | undefined => {
-  return cookies().get(SESSION_COOKIE_NAME)?.value;
-};
+export const getSessionToken = cache(async (): Promise<string | undefined> => {
+  const awaitedCookies = await cookies();
+  return awaitedCookies.get(SESSION_COOKIE_NAME)?.value;
+});
 
 export const getCurrentUser = cache(async () => {
   const { user } = await validateRequest();
@@ -52,5 +60,5 @@ export const assertAuthenticated = async () => {
 export const setSession = async (userId: UserId) => {
   const token = generateSessionToken();
   const session = await createSession(token, userId);
-  setSessionTokenCookie(token, session.expiresAt);
+  await setSessionTokenCookie(token, session.expiresAt);
 };

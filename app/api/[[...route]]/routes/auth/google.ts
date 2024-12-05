@@ -31,14 +31,14 @@ const app = new Hono()
     const scopes = ["profile", "email"];
     const url = google.createAuthorizationURL(state, codeVerifier, scopes);
 
-    cookies().set("google_oauth_state", state, {
+    (await cookies()).set("google_oauth_state", state, {
       secure: true,
       path: "/",
       httpOnly: true,
       maxAge: 60 * 10,
     });
 
-    cookies().set("google_code_verifier", codeVerifier, {
+    (await cookies()).set("google_code_verifier", codeVerifier, {
       secure: true,
       path: "/",
       httpOnly: true,
@@ -51,8 +51,10 @@ const app = new Hono()
     const url = new URL(c.req.url);
     const code = url.searchParams.get("code");
     const state = url.searchParams.get("state");
-    const storedState = cookies().get("google_oauth_state")?.value ?? null;
-    const codeVerifier = cookies().get("google_code_verifier")?.value ?? null;
+    const storedState =
+      (await cookies()).get("google_oauth_state")?.value ?? null;
+    const codeVerifier =
+      (await cookies()).get("google_code_verifier")?.value ?? null;
 
     if (
       !code ||
