@@ -94,6 +94,7 @@ bun run dev
 
 ## Project Structure
 
+```
 ├── app/
 │   ├── (auth)/
 │   │   ├── login/
@@ -163,6 +164,7 @@ bun run dev
 │   └── magic-link.tsx
 └── constant/
     └── app-config.ts
+```
 
 ## Features in Detail
 
