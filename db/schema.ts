@@ -7,25 +7,42 @@ import {
   index,
   serial,
 } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
 
-export const accountTypeEnum = pgEnum("account_type_enum", [
+import { schemaTablePrefix as prefix } from "@/constant/app-config";
+
+/**
+ * @ENUMS
+ *
+ * Here you can define drizzle enums which helps improve the type safety
+ * in your code.
+ */
+
+export const accountTypeEnum = pgEnum(`${prefix}_account_type_enum`, [
   "email",
   "google",
   "github",
 ]);
 
-export const UsersTable = pgTable("su_users", {
+/**
+ * @TABLES
+ *
+ * Here you can define drizzle tables which helps improve the type safety
+ * in your code.
+ */
+
+export const users = pgTable(`${prefix}_users`, {
   id: serial("id").primaryKey(),
   email: varchar("email", { length: 255 }).unique(),
   emailVerified: timestamp("email_verified", { withTimezone: true }),
 });
 
-export const AccountsTable = pgTable(
-  "su_accounts",
+export const accounts = pgTable(
+  `${prefix}_accounts`,
   {
     id: serial("id").primaryKey(),
     userId: serial("user_id")
-      .references(() => UsersTable.id, { onDelete: "cascade" })
+      .references(() => users.id, { onDelete: "cascade" })
       .notNull(),
     accountType: accountTypeEnum("accountType").notNull(),
     githubId: text("github_id").unique(),
@@ -40,31 +57,31 @@ export const AccountsTable = pgTable(
   }),
 );
 
-export const ProfilesTable = pgTable("su_profiles", {
+export const profiles = pgTable(`${prefix}_profiles`, {
   id: serial("id").primaryKey(),
   userId: serial("user_id")
     .notNull()
     .unique()
-    .references(() => UsersTable.id, { onDelete: "cascade" }),
+    .references(() => users.id, { onDelete: "cascade" }),
   displayName: text("display_name"),
   imageId: text("image_id"),
   imageUrl: text("image_url"),
   bio: text("bio"),
 });
 
-export const SessionsTable = pgTable("su_sessions", {
+export const sessions = pgTable(`${prefix}_sessions`, {
   id: text("id").primaryKey(),
   userId: serial("user_id")
     .notNull()
-    .references(() => UsersTable.id, { onDelete: "cascade" }),
+    .references(() => users.id, { onDelete: "cascade" }),
   expiresAt: timestamp("expires_at", {
     withTimezone: true,
     mode: "date",
   }).notNull(),
 });
 
-export const MagicLinksTable = pgTable(
-  "su_magic_links",
+export const magicLinks = pgTable(
+  `${prefix}_magic_links`,
   {
     id: serial("id").primaryKey(),
     email: text("email").notNull().unique(),
@@ -83,7 +100,14 @@ export const MagicLinksTable = pgTable(
  * in your code.
  */
 
-// TODO: Define relationships between tables
+export const userRelations = relations(users, ({ one, many }) => ({
+  profiles: one(profiles, {
+    fields: [users.id],
+    references: [profiles.userId],
+  }),
+  accounts: many(accounts),
+  sessions: many(sessions),
+}));
 
 /**
  * @TYPES
@@ -93,6 +117,6 @@ export const MagicLinksTable = pgTable(
  * in a component or function.
  */
 
-export type USER = typeof UsersTable.$inferSelect;
-export type PROFILE = typeof ProfilesTable.$inferSelect;
-export type SESSION = typeof SessionsTable.$inferSelect;
+export type User = typeof users.$inferSelect;
+export type Profile = typeof profiles.$inferSelect;
+export type Session = typeof sessions.$inferSelect;

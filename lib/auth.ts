@@ -6,10 +6,10 @@ import { GitHub, Google } from "arctic";
 import { sha256 } from "@oslojs/crypto/sha2";
 
 import {
-  USER as User,
-  SESSION as Session,
-  UsersTable as Users,
-  SessionsTable as Sessions,
+  User,
+  Session,
+  users as Users,
+  sessions as Sessions,
 } from "@/db/schema";
 import { db } from "@/db";
 import { env } from "@/lib/env";
@@ -65,7 +65,7 @@ export const validateSessionToken = async (
   token: string,
 ): Promise<SESSION_VALIDATION_RESULT> => {
   const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
-  const sessionInDb = await db.query.SessionsTable.findFirst({
+  const sessionInDb = await db.query.sessions.findFirst({
     where: eq(Sessions.id, sessionId),
   });
 
@@ -78,7 +78,7 @@ export const validateSessionToken = async (
     return { session: null, user: null };
   }
 
-  const userSessionInDb = await db.query.UsersTable.findFirst({
+  const userSessionInDb = await db.query.users.findFirst({
     where: eq(Users.id, sessionInDb.userId),
   });
 
