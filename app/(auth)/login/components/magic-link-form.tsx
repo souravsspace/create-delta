@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import LoaderButton from "@/components/shared/loader-button";
-import useSendMagicLink from "@/hooks/magic/use-send-magic-link";
+import useSendMagicLink from "@/hooks/others/use-send-magic-link";
 
 const FormSchema = z.object({
   email: z.string().email(),

@@ -5,6 +5,7 @@ import magic from "./routes/auth/magic";
 import google from "./routes/auth/google";
 import github from "./routes/auth/github";
 import logout from "./routes/auth/logout";
+import newsletters from "./routes/newsletters";
 
 const app = new Hono().basePath("/api");
 
@@ -13,7 +14,8 @@ const routes = app
   .route("/auth/login/magic", magic)
   .route("/auth/login/google", google)
   .route("/auth/login/github", github)
-  .route("/auth/logout", logout);
+  .route("/auth/logout", logout)
+  .route("/newsletters", newsletters);
 
 export const GET = handle(app);
 export const POST = handle(app);

@@ -1,1 +1,0 @@
-ALTER TYPE "public"."type" RENAME TO "account_type_enum";

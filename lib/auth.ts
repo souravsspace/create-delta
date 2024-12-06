@@ -6,19 +6,20 @@ import { GitHub, Google } from "arctic";
 import { sha256 } from "@oslojs/crypto/sha2";
 
 import {
-  User,
   Session,
   users as Users,
   sessions as Sessions,
+  profiles,
 } from "@/db/schema";
 import { db } from "@/db";
 import { env } from "@/lib/env";
 import { eq } from "drizzle-orm";
 import { getSessionToken } from "@/lib/session";
 import { UserId } from "@/others/data-access/types";
+import { UserExtended } from "@/types";
 
-const SESSION_REFRESH_INTERVAL_MS = 1000 * 60 * 60 * 24 * 15;
-const SESSION_MAX_DURATION_MS = SESSION_REFRESH_INTERVAL_MS * 2;
+const SESSION_REFRESH_INTERVAL_MS = 1000 * 60 * 60 * 24 * 15; // 15 days
+const SESSION_MAX_DURATION_MS = SESSION_REFRESH_INTERVAL_MS * 2; // 30 days
 
 export const github = new GitHub(
   env.GITHUB_CLIENT_ID,
@@ -78,9 +79,17 @@ export const validateSessionToken = async (
     return { session: null, user: null };
   }
 
-  const userSessionInDb = await db.query.users.findFirst({
-    where: eq(Users.id, sessionInDb.userId),
-  });
+  const [userSessionInDb] = await db
+    .select({
+      id: Users.id,
+      email: Users.email,
+      emailVerified: Users.emailVerified,
+      displayName: profiles.displayName,
+      profileUrl: profiles.imageUrl,
+    })
+    .from(Users)
+    .leftJoin(profiles, eq(Users.id, profiles.userId))
+    .where(eq(Users.id, sessionInDb.userId));
 
   if (!userSessionInDb) {
     await invalidateSession(sessionInDb.id);
@@ -111,5 +120,5 @@ export const invalidateUserSessions = async (userId: UserId): Promise<void> => {
 };
 
 export type SESSION_VALIDATION_RESULT =
-  | { session: Session; user: User }
+  | { session: Session; user: UserExtended }
   | { session: null; user: null };

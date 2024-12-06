@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1732223106493,
-      "tag": "0000_light_senator_kelly",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1732223181339,
-      "tag": "0001_wet_justice",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1732224553208,
-      "tag": "0002_thin_dazzler",
+      "when": 1733515767063,
+      "tag": "0000_lush_mephistopheles",
       "breakpoints": true
     }
   ]

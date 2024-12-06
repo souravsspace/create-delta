@@ -5,19 +5,21 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
+    "build:start": "next build && next start",
     "start": "next start",
     "lint": "next lint",
     "db:generate": "drizzle-kit generate --dialect=postgresql --schema=./db/schema.ts --out=./db/migrations",
     "db:migrate": "bun ./db/migrate.ts",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "email:dev": "email dev"
+    "email:dev": "email dev",
+    "db:clear": "bun ./db/clear.ts"
   },
   "dependencies": {
     "@hono/zod-validator": "^0.4.1",
     "@hookform/resolvers": "^3.9.1",
-    "@neondatabase/serverless": "^0.10.3",
     "@oslojs/crypto": "^1.0.1",
+    "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-dropdown-menu": "^2.1.2",
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-slot": "^1.1.0",
@@ -27,13 +29,15 @@
     "arctic": "^2.2.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
     "dotenv": "^16.4.5",
-    "drizzle-orm": "^0.36.3",
+    "drizzle-orm": "^0.37.0",
     "hono": "^4.6.11",
     "lucide-react": "^0.460.0",
     "next": "15.0.3",
     "next-themes": "^0.4.3",
     "nextjs-toploader": "^3.7.15",
+    "postgres": "^3.4.5",
     "react": "19.0.0-rc-66855b96-20241106",
     "react-dom": "19.0.0-rc-66855b96-20241106",
     "react-hook-form": "^7.53.2",
@@ -64,5 +68,6 @@
   "overrides": {
     "@types/react": "npm:types-react@19.0.0-rc.1",
     "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
-  }
+  },
+  "license": "MIT"
 }

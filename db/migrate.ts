@@ -1,22 +1,11 @@
-import { env } from "@/lib/env";
-import * as schema from "@/db/schema";
-import { drizzle } from "drizzle-orm/neon-http";
-import { neon } from "@neondatabase/serverless";
-import { migrate } from "drizzle-orm/neon-http/migrator";
+import "dotenv/config";
 
-const sql = neon(env.DATABASE_URL);
-const db = drizzle(sql, { schema });
+import { migrate } from "drizzle-orm/postgres-js/migrator";
+import { db, pg } from "@/db";
 
-const main = async () => {
-  try {
-    await migrate(db, { migrationsFolder: "db/migrations" });
-    console.log("Migration completed successfully");
-  } catch (error) {
-    console.error("Migration failed:", error);
-    process.exit(1);
-  } finally {
-    process.exit(0);
-  }
-};
+async function init() {
+  await migrate(db, { migrationsFolder: "./db/migrations" });
+  await pg.end();
+}
 
-main();
+init();

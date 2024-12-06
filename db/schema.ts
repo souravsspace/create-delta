@@ -5,9 +5,8 @@ import {
   timestamp,
   pgEnum,
   index,
-  serial,
+  uuid,
 } from "drizzle-orm/pg-core";
-import { relations } from "drizzle-orm";
 
 import { schemaTablePrefix as prefix } from "@/constant/app-config";
 
@@ -32,7 +31,7 @@ export const accountTypeEnum = pgEnum(`${prefix}_account_type_enum`, [
  */
 
 export const users = pgTable(`${prefix}_users`, {
-  id: serial("id").primaryKey(),
+  id: uuid("id").defaultRandom().primaryKey(),
   email: varchar("email", { length: 255 }).unique(),
   emailVerified: timestamp("email_verified", { withTimezone: true }),
 });
@@ -40,8 +39,8 @@ export const users = pgTable(`${prefix}_users`, {
 export const accounts = pgTable(
   `${prefix}_accounts`,
   {
-    id: serial("id").primaryKey(),
-    userId: serial("user_id")
+    id: uuid("id").defaultRandom().primaryKey(),
+    userId: uuid("user_id")
       .references(() => users.id, { onDelete: "cascade" })
       .notNull(),
     accountType: accountTypeEnum("accountType").notNull(),
@@ -58,8 +57,8 @@ export const accounts = pgTable(
 );
 
 export const profiles = pgTable(`${prefix}_profiles`, {
-  id: serial("id").primaryKey(),
-  userId: serial("user_id")
+  id: uuid("id").defaultRandom().primaryKey(),
+  userId: uuid("user_id")
     .notNull()
     .unique()
     .references(() => users.id, { onDelete: "cascade" }),
@@ -71,7 +70,7 @@ export const profiles = pgTable(`${prefix}_profiles`, {
 
 export const sessions = pgTable(`${prefix}_sessions`, {
   id: text("id").primaryKey(),
-  userId: serial("user_id")
+  userId: uuid("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   expiresAt: timestamp("expires_at", {
@@ -83,7 +82,7 @@ export const sessions = pgTable(`${prefix}_sessions`, {
 export const magicLinks = pgTable(
   `${prefix}_magic_links`,
   {
-    id: serial("id").primaryKey(),
+    id: uuid("id").defaultRandom().primaryKey(),
     email: text("email").notNull().unique(),
     token: text("token"),
     tokenExpiresAt: timestamp("tokenExpiresAt", { mode: "date" }),
@@ -93,6 +92,11 @@ export const magicLinks = pgTable(
   }),
 );
 
+export const newsletters = pgTable(`${prefix}_newsletters`, {
+  id: uuid("id").defaultRandom().primaryKey(),
+  email: text("email").notNull().unique(),
+});
+
 /**
  * @RELATIONSHIPS
  *
@@ -100,14 +104,7 @@ export const magicLinks = pgTable(
  * in your code.
  */
 
-export const userRelations = relations(users, ({ one, many }) => ({
-  profiles: one(profiles, {
-    fields: [users.id],
-    references: [profiles.userId],
-  }),
-  accounts: many(accounts),
-  sessions: many(sessions),
-}));
+// TODO: Add relations
 
 /**
  * @TYPES

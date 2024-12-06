@@ -1,25 +1,18 @@
-import Link from "next/link";
-
+import UserCard from "./components/user-card";
+import Subscribe from "./components/subscribe";
 import { getCurrentUser } from "@/lib/session";
-import { buttonVariants } from "@/components/ui/button";
+import Wrapper from "@/components/shared/wrapper";
 
 const HomePage = async () => {
   const user = await getCurrentUser();
 
   return (
-    <main className="flex h-screen w-full flex-col items-center justify-center gap-4 p-4">
-      <div className="flex flex-col items-center gap-4">
-        <h2 className="text-center text-xl font-bold uppercase sm:text-2xl">
-          {user?.email}!
-        </h2>
-        <Link
-          href="/api/auth/logout"
-          className={buttonVariants({ variant: "default" })}
-        >
-          LogOut
-        </Link>
+    <Wrapper>
+      <div className="mx-auto my-20 flex max-w-xl flex-col gap-6 md:gap-10">
+        <Subscribe />
+        <UserCard user={user} />
       </div>
-    </main>
+    </Wrapper>
   );
 };
 

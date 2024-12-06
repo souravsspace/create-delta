@@ -20,7 +20,7 @@ const SignedOutPage = () => {
       </p>
 
       <Link
-        href="/"
+        href="/login"
         className={buttonVariants({ variant: "default", className: "w-full" })}
       >
         Sign In
