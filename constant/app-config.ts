@@ -17,10 +17,17 @@ export const publicRoutes = ["/overview"];
 export const homeRouteNonAuth = "/overview";
 
 export const applicationName = "Create-Delta";
+export const companyName = "Delta";
 
 export const afterLoginUrl = "/";
 export const afterLogoutUrl = "/signed-out";
 export const loginUrl = "/login";
+
+export const social = {
+  githubUrl: "https://github.com/souravsspace/create-delta",
+  linkedinUrl: "https://www.linkedin.com/company/delta-labs-org/",
+  twitterUrl: "https://x.com/delta_labs_org",
+};
 
 export const TOKEN_LENGTH = 32;
 export const TOKEN_TTL = 1000 * 60 * 5; // 5 min
