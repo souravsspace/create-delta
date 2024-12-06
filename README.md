@@ -31,6 +31,9 @@ A modern, full-stack Next.js starter template designed for building scalable Saa
 - **API Layer:** [Hono.js](https://hono.dev/)
 - **State Management:** [TanStack Query](https://tanstack.com/query)
 - **Deployment:** Ready for deployment on [Vercel](https://vercel.com)
+- **Container:** Docker with multi-stage builds
+- **Type Safety:** TypeScript with strict mode
+- **Environment:** Bun runtime
 
 ## Getting Started
 
@@ -107,8 +110,9 @@ bun run dev
 │   │   │   └── page.tsx
 │   │   └── signed-out/
 │   │       └── page.tsx
-│   ├── (dashboard)/
-│   │   └── page.tsx
+│   ├── (routes)/
+│   │   ├── (public)/
+│   │   └── (private)/
 │   ├── api/
 │   │   └── [[...route]]/
 │   │       ├── route.ts
@@ -129,10 +133,7 @@ bun run dev
 │   │   ├── icons.tsx
 │   │   └── loader-button.tsx
 │   └── ui/
-│       ├── button.tsx
-│       ├── form.tsx
-│       ├── input.tsx
-│       └── [other shadcn components]
+│       └── [shadcn components]
 ├── lib/
 │   ├── auth.ts
 │   ├── env.ts
@@ -140,6 +141,7 @@ bun run dev
 │   ├── get-ip.ts
 │   ├── hono.ts
 │   ├── limiter.ts
+│   ├── newsletter.ts
 │   ├── send-email.tsx
 │   ├── session.ts
 │   └── utils.ts
@@ -148,6 +150,7 @@ bun run dev
 ├── db/
 │   ├── migrations/
 │   ├── index.ts
+│   ├── clear.ts
 │   ├── migrate.ts
 │   └── schema.ts
 ├── others/
@@ -155,10 +158,13 @@ bun run dev
 │   │   ├── auth.ts
 │   │   ├── magic-links.ts
 │   │   ├── profiles.ts
+│   │   └── newsletters.ts
 │   │   └── types.ts
+│   │   └── utils.ts
 │   └── use-case/
 │       ├── auth.ts
 │       ├── magic-links.tsx
+│       ├── newsletter.ts
 │       └── errors.ts
 ├── emails/
 │   └── magic-link.tsx
@@ -182,6 +188,30 @@ bun run dev
 - Automatic migration management
 - Efficient connection pooling
 - PostgreSQL with Neon serverless
+
+### Newsletter
+
+- Newsletter sending with Resend
+
+### Docker support
+
+- Dockerfile with multi-stage build process
+- Docker Compose configuration for development
+- PostgreSQL database container configuration
+- Production-ready Docker setup
+- Environment variable handling in containers
+
+To run with Docker:
+
+```bash
+docker compose up -d
+```
+
+To run with Docker db only:
+
+```bash
+docker compose up -d db
+```
 
 ### Email
 
@@ -213,10 +243,12 @@ bun run dev
 bun run dev # Start development server
 bun run build # Build for production
 bun run start # Start production server
+bun run build:start # Build and start production server
 bun run lint # Run ESLint
 bun run db:generate # Generate database migrations
 bun run db:migrate # Run database migrations
 bun run db:push # Push schema changes to database
+bun run db:clear # Clear database
 bun run db:studio # Open Drizzle Studio
 bun run email:dev # Start email preview server
 ```
