@@ -31,11 +31,9 @@ ARG NEXT_PUBLIC_APP_URL
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
-
-# Database migrations
+# Database setup - only generate, don't migrate
 RUN cd db && bun install
 RUN bun run db:generate
-RUN bun run db:migrate
 
 # Next.js build
 RUN bun run build
