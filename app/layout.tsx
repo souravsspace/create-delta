@@ -1,21 +1,16 @@
 import "@/styles/globals.css";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { getCurrentUser } from "@/lib/session";
 import { Toaster } from "@/components/ui/sonner";
 import { Providers } from "@/components/providers";
 import { AuthProvider } from "@/contexts/auth-context";
-import { getCurrentUser } from "@/lib/session";
+import { Poppins } from "next/font/google";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+const font = Poppins({
+  subsets: ["latin"],
+  variable: "--font-poppins",
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -32,13 +27,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={cn(
-          "bg-background antialiased",
-          geistSans.variable,
-          geistMono.variable,
-        )}
-      >
+      <body className={cn("bg-background antialiased", font.variable)}>
         <AuthProvider initialUser={user}>
           <Providers>
             <Toaster />
