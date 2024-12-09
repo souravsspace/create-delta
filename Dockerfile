@@ -33,7 +33,6 @@ ENV NEXT_TELEMETRY_DISABLED=1
 
 # Database setup - only generate, don't migrate
 RUN cd db && bun install
-RUN bun run db:generate
 
 # Next.js build
 RUN bun run build
@@ -62,6 +61,7 @@ USER nextjs
 EXPOSE 3000
 
 ENV PORT=3000
-ENV HOSTNAME=localhost
+
+ARG HOSTNAME
 
 CMD ["bun", "run", "start"]

@@ -1,40 +1,15 @@
 services:
-  server:
-    build:
-      context: .
-    env_file:
-      - .env
-    environment:
-      NODE_ENV: production
-      DATABASE_URL: "postgresql://postgres:postgres@db:5432/postgres"
-    ports:
-      - 3000:3000
-    depends_on:
-      db:
-        condition: service_healthy
-    command: >
-      sh -c "sleep 5 && bun run db:migrate && bun run start"
-
-  db:
+  create-delta:
     image: postgres:17-alpine
     restart: always
-    container_name: create-delta-db
-    user: postgres
-    volumes:
-      - db-data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PORT=5432
-      - POSTGRES_DB=postgres
-      - POSTGRES_PASSWORD=postgres
-
+    container_name: create-delta
     ports:
       - 5432:5432
-    healthcheck:
-      test: ["CMD", "pg_isready"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    environment:
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
 
 volumes:
-  db-data:
+  postgres:
