@@ -9,7 +9,7 @@ import {
 import { env } from "@/lib/env";
 import { github } from "@/lib/auth";
 import { setSession } from "@/lib/session";
-import { afterLoginUrl } from "@/constant/app-config";
+import { afterLoginUrl } from "@/constants/app-config";
 
 export interface GitHubUser {
   id: string;
@@ -51,7 +51,8 @@ const app = new Hono()
     const url = new URL(c.req.url);
     const code = url.searchParams.get("code");
     const state = url.searchParams.get("state");
-    const storedState = (await cookies()).get("github_oauth_state")?.value ?? null;
+    const storedState =
+      (await cookies()).get("github_oauth_state")?.value ?? null;
 
     if (!code || !state || !storedState || state !== storedState) {
       return c.json(null, 400);

@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
-import { TOKEN_LENGTH, TOKEN_TTL } from "@/constant/app-config";
+import { TOKEN_LENGTH, TOKEN_TTL } from "@/constants/app-config";
 import { generateRandomToken } from "@/others/data-access/utils";
 import { accounts, magicLinks, users } from "@/db/schema";
 

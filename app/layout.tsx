@@ -4,6 +4,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Toaster } from "@/components/ui/sonner";
 import { Providers } from "@/components/providers";
+import { AuthProvider } from "@/contexts/auth-context";
+import { getCurrentUser } from "@/lib/session";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -26,6 +28,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const user = await getCurrentUser();
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -35,10 +39,12 @@ export default async function RootLayout({
           geistMono.variable,
         )}
       >
-        <Providers>
-          <Toaster />
-          {children}
-        </Providers>
+        <AuthProvider initialUser={user}>
+          <Providers>
+            <Toaster />
+            {children}
+          </Providers>
+        </AuthProvider>
       </body>
     </html>
   );

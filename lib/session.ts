@@ -9,8 +9,8 @@ import {
 } from "@/lib/auth";
 import { env } from "@/lib/env";
 import { UserId } from "@/others/data-access/types";
-import { SESSION_COOKIE_NAME } from "@/constant/app-config";
-import { AuthenticationError } from "@/others/use-case/errors";
+import { SESSION_COOKIE_NAME } from "@/constants/app-config";
+import { AuthenticationError } from "@/lib/errors";
 
 export const setSessionTokenCookie = async (
   token: string,

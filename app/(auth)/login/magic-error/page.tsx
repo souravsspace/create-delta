@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { loginUrl } from "@/constant/app-config";
+import { loginUrl } from "@/constants/app-config";
 
 const MagicLinkError = () => {
   return (

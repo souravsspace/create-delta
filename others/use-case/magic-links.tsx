@@ -8,7 +8,7 @@ import {
 } from "@/others/data-access/magic-links";
 import { sendEmail } from "@/lib/send-email";
 import { PublicError } from "@/others/use-case/errors";
-import { applicationName } from "@/constant/app-config";
+import { applicationName } from "@/constants/app-config";
 import { createProfile } from "@/others/data-access/profiles";
 import {
   getUserByEmailFromDatabase,
@@ -18,6 +18,12 @@ import MagicLinkEmail from "@/emails/magic-link";
 
 export async function sendMagicLinkUseCase(email: string) {
   const token = await upsertMagicLink(email);
+
+  // TODO: remove this after testing
+  console.log(
+    "magicLink",
+    `http://localhost:3000/api/auth/login/magic?token=${token}`,
+  );
 
   await sendEmail(
     email,

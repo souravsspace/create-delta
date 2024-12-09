@@ -2,7 +2,7 @@ import Icons from "@/components/shared/icons";
 import { ModeToggle } from "@/components/shared/mode-toggle";
 import Wrapper from "@/components/shared/wrapper";
 import { buttonVariants } from "@/components/ui/button";
-import { applicationName, social } from "@/constant/app-config";
+import { applicationName, social } from "@/constants/app-config";
 import Link from "next/link";
 
 const Footer = () => {

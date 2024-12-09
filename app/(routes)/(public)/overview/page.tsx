@@ -1,6 +1,6 @@
 import Wrapper from "@/components/shared/wrapper";
 import { buttonVariants } from "@/components/ui/button";
-import { applicationName, loginUrl } from "@/constant/app-config";
+import { applicationName, loginUrl } from "@/constants/app-config";
 import Link from "next/link";
 
 const OverviewPage = () => {

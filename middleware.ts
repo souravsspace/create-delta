@@ -8,7 +8,7 @@ import {
   SESSION_COOKIE_NAME,
   homeRouteNonAuth,
   publicRoutes,
-} from "@/constant/app-config";
+} from "@/constants/app-config";
 
 export function middleware(request: NextRequest) {
   const { nextUrl } = request;

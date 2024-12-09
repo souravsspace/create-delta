@@ -15,7 +15,7 @@ import {
 } from "@react-email/components";
 
 import { env } from "@/lib/env";
-import { applicationName, LOGO_URL } from "@/constant/app-config";
+import { applicationName, LOGO_URL } from "@/constants/app-config";
 
 const BASE_URL = env.APP_URL;
 

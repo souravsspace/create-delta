@@ -8,7 +8,7 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 
-import { schemaTablePrefix as prefix } from "@/constant/app-config";
+import { schemaTablePrefix as prefix } from "@/constants/app-config";
 
 /**
  * @ENUMS

@@ -8,7 +8,7 @@ import {
   loginWithMagicLinkUseCase,
   sendMagicLinkUseCase,
 } from "@/others/use-case/magic-links";
-import { afterLoginUrl } from "@/constant/app-config";
+import { afterLoginUrl } from "@/constants/app-config";
 
 const app = new Hono()
   .post(

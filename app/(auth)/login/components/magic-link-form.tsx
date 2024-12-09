@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormMessage,
@@ -16,11 +17,13 @@ import LoaderButton from "@/components/shared/loader-button";
 import useSendMagicLink from "@/hooks/others/use-send-magic-link";
 
 const FormSchema = z.object({
-  email: z.string().email(),
+  email: z.string().email({
+    message: "Please enter a valid email address.",
+  }),
 });
 type FormSchemaType = z.infer<typeof FormSchema>;
 
-export function MagicLinkForm() {
+const MagicLinkForm = () => {
   const { mutate, isPending } = useSendMagicLink();
 
   const form = useForm<FormSchemaType>({
@@ -46,18 +49,24 @@ export function MagicLinkForm() {
                 <Input
                   {...field}
                   className="w-full"
-                  placeholder="Enter your email"
+                  placeholder="example@email.com"
                   type="email"
                 />
               </FormControl>
               <FormMessage />
+              <FormDescription>
+                We&apos;ll send you a magic link to create your account or sign
+                in.
+              </FormDescription>
             </FormItem>
           )}
         />
         <LoaderButton isLoading={isPending} className="w-full" type="submit">
-          Sign in with magic link
+          Login with Magic Link
         </LoaderButton>
       </form>
     </Form>
   );
-}
+};
+
+export default MagicLinkForm;
