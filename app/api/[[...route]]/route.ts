@@ -5,7 +5,8 @@ import magic from "./routes/auth/magic";
 import google from "./routes/auth/google";
 import github from "./routes/auth/github";
 import logout from "./routes/auth/logout";
-import newsletters from "./routes/newsletters";
+import newsletter from "./routes/newsletter";
+import profile from "./routes/profile";
 
 const app = new Hono().basePath("/api");
 
@@ -25,7 +26,8 @@ const routes = app
    * Here you can define private routes that require authentication.
    */
   .route("/auth/logout", logout)
-  .route("/newsletters", newsletters);
+  .route("/newsletter", newsletter)
+  .route("/profile", profile);
 
 export const GET = handle(app);
 export const POST = handle(app);

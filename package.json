@@ -16,6 +16,10 @@
     "db:clear": "bun ./db/clear.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.705.0",
+    "@aws-sdk/lib-storage": "^3.705.0",
+    "@aws-sdk/s3-presigned-post": "^3.705.0",
+    "@aws-sdk/s3-request-presigner": "^3.705.0",
     "@hono/zod-validator": "^0.4.1",
     "@hookform/resolvers": "^3.9.1",
     "@oslojs/crypto": "^1.0.1",
@@ -39,12 +43,14 @@
     "postgres": "^3.4.5",
     "react": "19.0.0-rc-66855b96-20241106",
     "react-dom": "19.0.0-rc-66855b96-20241106",
+    "react-dropzone": "^14.3.5",
     "react-hook-form": "^7.53.2",
     "resend": "^4.0.1",
     "sonner": "^1.7.0",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
     "unique-names-generator": "^4.7.1",
+    "uuid": "^11.0.3",
     "zod": "^3.23.8",
     "zsa": "^0.6.0"
   },
@@ -52,6 +58,7 @@
     "@types/node": "^20",
     "@types/react": "npm:types-react@19.0.0-rc.1",
     "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
+    "@types/uuid": "^10.0.0",
     "add": "^2.0.6",
     "drizzle-kit": "^0.28.1",
     "eslint": "^8",

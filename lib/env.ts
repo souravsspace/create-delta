@@ -16,6 +16,10 @@ export const env = createEnv({
     EMAIL_FROM: z.string().min(1),
     RESEND_AUDIENCE_ID: z.string().min(1),
     APP_URL: z.string().min(1),
+    CLOUDFLARE_ACCOUNT_ID: z.string().min(1),
+    CLOUDFLARE_ACCESS_KEY_ID: z.string().min(1),
+    CLOUDFLARE_SECRET_ACCESS_KEY: z.string().min(1),
+    CLOUDFLARE_BUCKET_NAME: z.string().min(1),
   },
   client: {
     NEXT_PUBLIC_APP_URL: z.string().min(1),
@@ -35,5 +39,9 @@ export const env = createEnv({
     RESEND_AUDIENCE_ID: process.env.RESEND_AUDIENCE_ID,
     APP_URL: process.env.APP_URL,
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+    CLOUDFLARE_ACCOUNT_ID: process.env.CLOUDFLARE_ACCOUNT_ID,
+    CLOUDFLARE_ACCESS_KEY_ID: process.env.CLOUDFLARE_ACCESS_KEY_ID,
+    CLOUDFLARE_SECRET_ACCESS_KEY: process.env.CLOUDFLARE_SECRET_ACCESS_KEY,
+    CLOUDFLARE_BUCKET_NAME: process.env.CLOUDFLARE_BUCKET_NAME,
   },
 });

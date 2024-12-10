@@ -25,12 +25,19 @@ const UserCard = ({ user }: UserCardProps) => {
             <AvatarImage
               src={user?.profileUrl ?? ""}
               alt={user?.displayName ?? "Profile"}
+              className="object-cover"
             />
             <AvatarFallback className="uppercase">
               {user?.displayName?.slice(0, 2)}
             </AvatarFallback>
           </Avatar>
           <span>{user?.displayName}</span>
+          {user?.bio ? (
+            <>
+              <span> | </span>
+              <span className="text-muted-foreground">{user?.bio}</span>
+            </>
+          ) : null}
         </CardTitle>
         <CardDescription>
           It&apos;s {formatDate({ date: new Date(), short: true })}, love to see

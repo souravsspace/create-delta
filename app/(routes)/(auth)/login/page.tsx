@@ -7,11 +7,12 @@ import {
 } from "@/components/ui/card";
 import OAuth from "./components/o-auth";
 import MagicLinkForm from "./components/magic-link-form";
+import Wrapper from "@/components/shared/wrapper";
 
 const LoginPage = () => {
   return (
-    <div className="mx-auto flex min-h-[80dvh] items-center justify-center py-24">
-      <Card className="mx-auto min-w-[25rem] max-w-[26rem]">
+    <Wrapper>
+      <Card className="mx-auto min-w-[20rem] max-w-[26rem] sm:min-w-[22rem] md:min-w-[24rem]">
         <CardHeader>
           <CardTitle className="text-3xl font-bold">Sign in</CardTitle>
           <CardDescription>
@@ -37,7 +38,7 @@ const LoginPage = () => {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </Wrapper>
   );
 };
 

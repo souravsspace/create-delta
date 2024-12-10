@@ -9,7 +9,7 @@ import {
 import { sendEmail } from "@/lib/send-email";
 import { PublicError } from "@/others/use-case/errors";
 import { applicationName } from "@/constants/app-config";
-import { createProfile } from "@/others/data-access/profiles";
+import { createProfile } from "@/others/data-access/profile";
 import {
   getUserByEmailFromDatabase,
   setEmailVerifiedFromDatabase,

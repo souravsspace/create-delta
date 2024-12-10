@@ -7,7 +7,7 @@ import { zValidator } from "@hono/zod-validator";
 import {
   loginWithMagicLinkUseCase,
   sendMagicLinkUseCase,
-} from "@/others/use-case/magic-links";
+} from "@/others/use-case/magic-link";
 import { afterLoginUrl } from "@/constants/app-config";
 
 const app = new Hono()
