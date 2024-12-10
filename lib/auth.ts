@@ -86,6 +86,7 @@ export const validateSessionToken = async (
       emailVerified: Users.emailVerified,
       displayName: profiles.displayName,
       profileUrl: profiles.imageUrl,
+      bio: profiles.bio,
     })
     .from(Users)
     .leftJoin(profiles, eq(Users.id, profiles.userId))
